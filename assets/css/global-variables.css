@@ -1,0 +1,15 @@
+:root {
+  --isabelline: #ededed;
+  --silver: #BBB3AB;
+  --butterscotch: #D58C2B;
+  --walnut-brown: #635D57;
+  --taupe-gray: #8D8E93;
+  --slate-gray: #4e5459;
+  --carmine: #97151B;
+
+  /* You can create new variables or replace the existing ones */
+  --bg-color: var(--isabelline);
+  --nav-bg-color: var(--slate-gray);
+  --text-light: var(--silver);
+  --text-dark: var(--walnut-brown);
+}

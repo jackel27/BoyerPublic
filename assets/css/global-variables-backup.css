@@ -1,0 +1,12 @@
+:root {
+  --primary-color: #f6c28a;       /* lightened yellowish */
+  --secondary-color: #ffffff;     /* white                */
+  --tertiary-color: #bc3f47;      /* adjusted reddish     */
+  --quaternary-color: #323740;    /* adjusted blackish    */
+  --quinary-color: #7a3743;       /* adjusted for blending */
+
+  --bg-color: var(--primary-color);
+  --nav-bg-color: rgba(50, 55, 64, 0.95); /* lightened navbar */
+  --text-light: #ffffff;
+  --text-dark: #333333;
+}
