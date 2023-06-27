@@ -104,9 +104,12 @@ const jobPostings = ref([]);
 const jobEditing = ref(null);
 const closedJobPostings = ref([]);
 definePageMeta({
+  // define the middleware the page should use, can be a single value or an array, the order is important, the first middleware will be called first
+  // here we use admin middleware because we want to make sure only admin can access this page
   middleware: [admin]
 }),
 watch(() => jobsStore.jobPostings, (newJobPostings) => {
+  // we setup a watch for the jobPostings store, so whenever the store changes, we update the jobPostings ref
   jobPostings.value = newJobPostings;
 });
 watch(() => jobsStore.closedJobPostings, (newClosedJobPostings) => {

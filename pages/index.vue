@@ -81,6 +81,7 @@ import { ref, onBeforeMount } from 'vue';
 const vidRef = ref(null);
 
 onUnmounted(() => {
+  // Check if the video exists and is not mobile
   if (!isMobile.value && vidRef.value) {
     // Pause and reset the video when the component is unmounted
     vidRef.value.pause();
@@ -90,6 +91,7 @@ onUnmounted(() => {
 // Detect mobile devices
 const isMobile = ref(false);
 onBeforeMount(() => {
+  // Check if the user agent is a mobile device, and set the isMobile ref accordingly, so we can use it in the template
   const userAgent = navigator.userAgent || navigator.vendor;
   isMobile.value = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
 });

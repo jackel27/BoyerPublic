@@ -1,8 +1,6 @@
 <template>
   <div class="container mt-4">
-    <!-- <h2 class="text-center mb-4">Job Applicants</h2> -->
     <div v-if="!loading && job">
-      <!-- <h3>{{ job.title }}</h3> -->
       <applicants-table :applicants="applicants" :job="job"></applicants-table>
     </div>
     <div v-else>Loading...</div>
@@ -22,6 +20,7 @@ const applicants = ref([]);
 const loading = ref(true);
 
 onMounted(async () => {
+  // Get the job and applicants
   job.value = await jobsStore.getJobById(jobId);
   applicants.value = await jobsStore.getApplicantsByJobId(jobId);
   console.log('applicants', applicants.value);

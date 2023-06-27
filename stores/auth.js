@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia';
 import { auth, db, getDoc, collection, setDoc, updateDoc, doc, sendEmailVerification, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from '../includes/firebase';
+
+// Create a store
 export const useAuthStore = defineStore('auth', {
+  // Define all the used state variables
   state: () => ({
     user: null,
     firstName: '',
@@ -9,6 +12,7 @@ export const useAuthStore = defineStore('auth', {
     dob: ''
   }),
   actions: {
+    // This function is used to save the user's information to Firestore
     async saveUserToFirestore(user, firstName, lastName, phone, dob) {
       const userRef = doc(collection(db, 'users'), user.uid);
       await setDoc(userRef, {
@@ -20,34 +24,35 @@ export const useAuthStore = defineStore('auth', {
         dob: dob,
       });
     },
+    // This function is used to update the user's information in Firestore
     setUser(user) {
       this.user = user;
     },
     async signOut() {
+      // Sign out the user
       await signOut(auth);
     },
     async signIn(email, password) {
+      // Sign in the user
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       return userCredential;
     },
     async getUserByEmail(email) {
-      // Replace this part with the code to get the user with the given email
+      // Check if the user exists
       const signInMethods = await fetchSignInMethodsForEmail(auth, email);
       if (signInMethods.length === 0) {
         throw new Error("User not found");
       }
-      
-      // Log in the user temporarily to retrieve the currentUser instance from the auth object
-      // Replace 'temporaryPassword' with the actual temporary password
+      // Sign in the user with a temporary password
       const userCredential = await signInWithEmailAndPassword(auth, email, "temporaryPassword");
       const user = userCredential.user;
     
-      // Sign out the user after retrieving their information
       await signOut(auth);
     
       return user;
     },
     async getUserProfile(user) {
+      // Get the user's profile from Firestore
       const userRef = doc(db, 'users', user.uid);
       const userSnapshot = await getDoc(userRef);
       if (userSnapshot.exists()) {
@@ -58,9 +63,11 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async resendVerificationEmail(user) {
+      // Send a verification email to the user
       await sendEmailVerification(user);
     },
     async register(email, password, firstName, lastName, phone, dob) {
+      // Register the user
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await this.saveUserToFirestore(userCredential.user, firstName, lastName, phone, dob);
     
@@ -74,6 +81,7 @@ export const useAuthStore = defineStore('auth', {
           if (!user.emailVerified) {
             // signOut(auth);
           } else {
+            // Save the user's information to the store
             this.setUser(user);
           }
         } else {
@@ -81,6 +89,6 @@ export const useAuthStore = defineStore('auth', {
           this.setUser(null);
         }
       });
-    },
-  },
+    }
+  }
 });

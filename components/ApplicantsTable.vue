@@ -98,7 +98,7 @@ const showDetails = (applicant) => {
   if (newWindow) newWindow.opener = null;
 };
 const deleteApplicant = async (applicantId) => {
-  // delete the applicant here
+  // TODO delete the applicant here
 };
 </script>
 

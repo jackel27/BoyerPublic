@@ -13,59 +13,45 @@
         <p>We value the unique skills, perspectives, and experiences that each team member brings to our company. Whether you're a seasoned maritime professional or a fresh graduate looking to start a fulfilling career, Boyer Towing offers an environment that nurtures talent, promotes innovation, and encourages continuous learning and development.</p>
     </div>
     <div class="col-md-6">
-        <h3>Benefits of Working With Us</h3>
-        <ul class="list-unstyled">
-            <li><i class="bi bi-check-circle-fill text-success"></i> Comprehensive Health Insurance</li>
-            <li><i class="bi bi-check-circle-fill text-success"></i> Free Lunches</li>
-            <li><i class="bi bi-check-circle-fill text-success"></i> Remote Work Options</li>
-            <li><i class="bi bi-check-circle-fill text-success"></i> Competitive Retirement Plans</li>
-            <li><i class="bi bi-check-circle-fill text-success"></i> Professional Development Opportunities</li>
-            <li><i class="bi bi-check-circle-fill text-success"></i> Employee Assistance Programs</li>
-            <li><i class="bi bi-check-circle-fill text-success"></i> Wellness Programs</li>
-        </ul>
+      <h3>Benefits of Working With Us</h3>
+      <ul class="list-unstyled">
+        <li><i class="bi bi-check-circle-fill text-success"></i> Comprehensive Health Insurance</li>
+        <li><i class="bi bi-check-circle-fill text-success"></i> Free Lunches</li>
+        <li><i class="bi bi-check-circle-fill text-success"></i> Remote Work Options</li>
+        <li><i class="bi bi-check-circle-fill text-success"></i> Competitive Retirement Plans</li>
+        <li><i class="bi bi-check-circle-fill text-success"></i> Professional Development Opportunities</li>
+        <li><i class="bi bi-check-circle-fill text-success"></i> Employee Assistance Programs</li>
+        <li><i class="bi bi-check-circle-fill text-success"></i> Wellness Programs</li>
+      </ul>
     </div>
-</div>
-
-
-    <!-- <div class="d-flex flex-column mb-4 bg-card-gradient rounded p-3 text-light shadow-lg">
-        <div class="input-group mb-2">
-          <input v-model="search" placeholder="Search jobs" class="form-control bro-input" />
-        </div>
-        <div class="input-group">
-          <select v-model="sortBy" class="form-select" style="width: 150px;">
-            <option value="title">Sort by Title</option>
-            <option value="location">Sort by Location</option>
-          </select>
-        </div>
-      </div> -->
-
-      <div class="row row-cols-1 row-cols-md-2 g-4">
-        <div class="col" v-for="(job, index) in filteredJobs" :key="index">
-          <div class="card mb-4 shadow-lg bro-card rounded p-3" @click="goToJobDetails(job.id)">
-            <div class="card-header bg-transparent border-0 pb-0">
-              <h3>{{ job.title }}</h3>
-              <p><small>{{ job.lastModified ? formatDate(job.lastModified) : job.created }}</small></p>
-            </div>
-            <div class="card-body pt-2">
-              <h5>{{ job.location }}</h5>
-              <p class="mb-4">{{ truncate(job.description, 100) }}</p>
-              <button class="btn btn-primary" @click="goToJobDetails(job.id)">View Job</button>
-            </div>
+  </div>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <div class="col" v-for="(job, index) in filteredJobs" :key="index">
+        <div class="card mb-4 shadow-lg bro-card rounded p-3" @click="goToJobDetails(job.id)">
+          <div class="card-header bg-transparent border-0 pb-0">
+            <h3>{{ job.title }}</h3>
+            <p><small>{{ job.lastModified ? formatDate(job.lastModified) : job.created }}</small></p>
+          </div>
+          <div class="card-body pt-2">
+            <h5>{{ job.location }}</h5>
+            <p class="mb-4">{{ truncate(job.description, 100) }}</p>
+            <button class="btn btn-primary" @click="goToJobDetails(job.id)">View Job</button>
           </div>
         </div>
       </div>
-
-      <div class="testimonial-section mt-5 bg-card-gradient rounded p-4 text-light shadow-lg">
-        <h3>What Our Employees Say</h3>
-        <blockquote class="blockquote">
-          <p>I love the Sea... This job is amazing! Good pay, benefits and more. Working for a family owned company, they treat all of us well!</p>
-          <footer class="blockquote-footer">David</footer>
-        </blockquote>
-        <!-- Add More Testimonials -->
-      </div>
-
     </div>
+
+    <div class="testimonial-section mt-5 bg-card-gradient rounded p-4 text-light shadow-lg">
+      <h3>What Our Employees Say</h3>
+      <blockquote class="blockquote">
+        <p>I love the Sea... This job is amazing! Good pay, benefits and more. Working for a family owned company, they treat all of us well!</p>
+        <footer class="blockquote-footer">David</footer>
+      </blockquote>
+      <!-- Add More Testimonials -->
+    </div>
+
   </div>
+</div>
 </template>
 
 <style scoped>
@@ -106,28 +92,34 @@ import { ref, onMounted, computed } from 'vue';
 import { useJobsStore } from '../stores/jobs';
 import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const jobsStore = useJobsStore();
 const search = ref("");
 const sortBy = ref("title");
 
 const formatDate = (dateString) => {
+  // If no date is provided, return an empty string
   if (!dateString) return '';
   const date = new Date(dateString);
   return `Posted on: ${date.toLocaleDateString()}`;
 };
 
 onMounted(async () => {
+  // Fetch the job listings from the store
   jobsStore.getJobListings();
 });
 
 const filteredJobs = computed(() => {
+  // If the job listings haven't been fetched yet, return an empty array
   if (!jobsStore.jobPostings) return [];
 
   const filtered = jobsStore.jobPostings.filter((job) =>
+    // Filter the job listings based on the search term and the status
     job.title.toLowerCase().includes(search.value.toLowerCase()) && job.status !== 'closed'
   );
 
   const sorted = filtered.sort((a, b) => {
+    // Sort the job listings based on the selected sort option
     if (a[sortBy.value] > b[sortBy.value]) return 1;
     if (a[sortBy.value] < b[sortBy.value]) return -1;
     return 0;
@@ -136,14 +128,13 @@ const filteredJobs = computed(() => {
   return sorted;
 });
 
-
-const router = useRouter();
-
 const goToJobDetails = (jobId) => {
+  // Navigate to the job details page
   router.push(`/jobDetails/${jobId}`);
 };
 
 const truncate = (text, charLimit) => {
+  // Truncate the job description if it exceeds the character limit
   const appendEllipsis = text.length > charLimit;
   return appendEllipsis ? text.substring(0, charLimit) + '...' : text;
 };

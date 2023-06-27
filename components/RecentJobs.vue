@@ -35,6 +35,7 @@ import { useJobsStore } from '../stores/jobs';
 const jobsStore = useJobsStore();
 const recentJobs = computed(() => {
   if (!jobsStore.jobPostings) return [];
+  // Sort by date created, then take the first 4
   return jobsStore.jobPostings.slice()
       .sort((a, b) => new Date(b.created) - new Date(a.created))
       .slice(0, 4);
@@ -45,6 +46,7 @@ onMounted(async () => {
 });
 
 const truncate = (text, charLimit) => {
+  // If text is longer than charLimit, append ellipsis
   const appendEllipsis = text.length > charLimit;
   return appendEllipsis ? text.substring(0, charLimit) + '...' : text;
 };

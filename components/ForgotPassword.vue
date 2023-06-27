@@ -25,6 +25,7 @@ const errorMessage = ref('')
 const successMessage = ref('')
 
 async function sendResetPasswordEmail() {
+  // Reset the error and success messages. This will hide them if they were previously shown.
   try {
     await sendPasswordResetEmail(auth, email.value)
     successMessage.value = 'A password reset link has been sent to your email address.'

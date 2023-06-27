@@ -79,6 +79,7 @@
 </style>
 
 <script setup>
+// Path: layouts\default.vue
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap';
@@ -88,8 +89,10 @@ const authStore = useAuthStore();
 const loggedInUser = ref(authStore.user);
 
 watch(
+  // watch the authStore.user value
   () => authStore.user,
   (newValue) => {
+    // update the loggedInUser ref value
     loggedInUser.value = newValue;
   }
 );

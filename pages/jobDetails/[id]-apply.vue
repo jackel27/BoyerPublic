@@ -349,6 +349,7 @@ const router = useRouter();
 const authStore = useAuthStore();
 const job = ref({});
 const application = ref({
+  // set all the application fields here
   userId: authStore.user.uid || null,
   jobId: router.currentRoute.value.params.id,
   firstName: '',
@@ -419,6 +420,7 @@ const application = ref({
 });
 
 onMounted(async () => {
+  // get the job
   const fetchedJob = await jobsStore.getJobById(router.currentRoute.value.params.id);
   job.value = fetchedJob;
   application.value.position = fetchedJob.title;
@@ -428,12 +430,14 @@ onMounted(async () => {
   state.isLoading = false;
 });
 const submitApplication = async () => {
+  // submit the application
   if (authStore.user) {
     await jobsStore.applyForJob(application.value);
     // router.push('/jobs');
   }
 }
 const getUserInfo = () => {
+  // get the user info
   if (authStore.user) {
     authStore.getUserProfile(authStore.user).then((user) => {
       application.value.firstName = user.firstName || '';

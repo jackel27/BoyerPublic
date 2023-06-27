@@ -3,8 +3,8 @@ import { getFirestore, Timestamp, collection, addDoc, getDocs, where, doc, getDo
 import { getAuth, onAuthStateChanged, sendEmailVerification, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from 'firebase/auth';
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAP4XMYjWg5zwe9w3V3HcfDudcQIJzuFhw",
-  authDomain: "boyer-f35f5.firebaseapp.com",
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   projectId: "boyer-f35f5",
   storageBucket: "boyer-f35f5.appspot.com",
   messagingSenderId: "947602977493",

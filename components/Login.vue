@@ -82,7 +82,7 @@
 </style>
 
 <script setup>
-import { ref, onMounted, nextTick, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from '#app';
 import { useAuthStore } from '../stores/auth';
 const loginError = ref('');
@@ -100,37 +100,45 @@ const gradient = computed(() => {
 });
 
 async function login() {
+  // this login function is called when the form is submitted, so we need to prevent the default behavior, which is to reload the page
   try {
+    // Sign in the user
     const userCredential = await authStore.signIn(email.value, password.value);
 
     if (!userCredential.user.emailVerified) {
+      // If the email is not verified, store the user object and show the modal
       userForResendEmail.value = userCredential.user; // Store the user object
       showModal.value = true;
       await authStore.signOut(); // Sign out the user since the email is not verified
     } else {
+      // If the email is verified, redirect to the home page
       loginSuccess.value = "Login successful! Redirecting to the home page...";
       setTimeout(() => {
         router.push("/");
       }, 2000);
     }
   } catch (error) {
+    // If there is an error, show the error message
     loginError.value = "Incorrect email or password. Please try again.";
   }
 }
 
 async function resendEmailVerification() {
   try {
+    // Resend the verification email
     await authStore.resendVerificationEmail(userForResendEmail.value); 
     // Use stored user object
     loginSuccess.value = "Email verification link has been sent to your email. Please check your inbox.";
     showModal.value = false;
   } catch (error) {
+    // If there is an error, show the error message
     loginError.value = `Error sending the verification link: ${error.message}`;
     showModal.value = false;
   }
 }
 
 const closeModal = () => {
+  // Close the modal
   showModal.value = false;
 };
 </script>

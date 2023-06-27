@@ -200,19 +200,24 @@ export default {
     const route = useRoute();
 
     onMounted(() => {
+      // Get the applicant data from the query string
       const applicantData = route.query.applicant
         ? JSON.parse(decodeURIComponent(route.query.applicant))
         : null;
       applicant.value = applicantData;
     });
     const printPDF = () => {
+      // Create a new PDF document, loop through each section of the page, and add it to the PDF, then save it. 
+      // Work in progress. need to refine the layout of the saved pdf from the html2canvas
       const pdf = new jsPDF('p', 'mm', 'a4');
       const sections = document.querySelectorAll('.page-section');
       let promises = [];
 
       sections.forEach((section, index) => {
+        // Add a page break between each section
         promises.push(
           html2canvas(section).then(canvas => {
+            // Get the image data from the canvas and add it to the PDF
             const imgData = canvas.toDataURL('image/png');
             const imgProps = pdf.getImageProperties(imgData);
             const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -220,15 +225,16 @@ export default {
             if(index !== 0){
               pdf.addPage();
             }
+            // Add the image to the PDF, and set the width and height to the page size, so it fills the page.
             pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
           })
         );
       });
-
+      // Once all the sections have been added to the PDF, save it.
       Promise.all(promises).then(() => pdf.save("download.pdf"));
     };
 
-
+    // Return the applicant data and the printPDF function to the template
     return { applicant, printPDF };
   },
 };
