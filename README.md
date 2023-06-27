@@ -2,6 +2,7 @@
 # Boyer - Job Management Application and Website
 
 This project serves as a showcase of my coding abilities for potential employers. The application is a job management system built with Nuxt.js, Firebase, and Pinia. I'm using Bootstrap 5. It also serves as displaying the company, what they do, etc..
+This is currently a work in progress.
 
 ## Project Overview
 
