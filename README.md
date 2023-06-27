@@ -7,7 +7,7 @@ This is currently a work in progress.
 ## Project Overview
 
 The Boyer application is a job management system where users can view and manage job postings.  It also serves as displaying the company, what they do, etc.. The application showcases the use of:
-
+- Node for the backend hosting and project initialization.
 - Nuxt.js for building the frontend UI of the application.
 - Firebase as the backend service to handle data storage and retrieval.
 - Pinia as the state management solution.
